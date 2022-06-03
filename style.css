@@ -1,19 +1,21 @@
 body {
     background-color: #121212;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.calculator {
-    width: 500px;
-    border: solid 2px red;
 }
 
 .container {
+    border: solid 2px blue;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.calculator {
+    border: solid 0.1px green;
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     gap: 5px;
     /* padding: 10px; */
 }
