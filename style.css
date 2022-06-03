@@ -1,0 +1,29 @@
+body {
+    background-color: #121212;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator {
+    width: 500px;
+    border: solid 2px red;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+    /* padding: 10px; */
+}
+
+.screen {
+    border: solid 0.1px red;
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.block {
+    border: solid 0.1px red;
+}
