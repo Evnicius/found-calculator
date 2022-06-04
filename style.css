@@ -29,3 +29,14 @@ body {
 .block {
     border: solid 0.1px red;
 }
+
+/* .buttonZero {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    border: solid 0.1px red;
+} */
+
+/* .buttonPlus {
+    grid-column-start: 3;
+    grid-column-end: 5;
+} */
