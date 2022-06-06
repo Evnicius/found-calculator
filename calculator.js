@@ -17,130 +17,129 @@ function selectOperation(operator, num1, num2) {
     }
 }
 
-function screen(string = "") {
-    //remove function probably needed
-
-    //let checkDot = string.search(/[.]/g);
-    console.log(typeof string)
-    const screenString = document.querySelector(".screen");
-    let currentText = screenString.innerText;
-    let tempString = currentText;
-
-    tempString += string;
-    if (string == 0 && currentText == 0) {
-        tempString = 0; 
-        //console.log("here")
-    }
-    // else if(checkDot && currentText == 0) {
-    //     tempString += string;
-    //     //console.log("here next")
-    // }
-    else if(string != 0 && currentText == 0) {
-        const listOperator = /[+-/*]/g;
-        let  convertToString = string.toString();
-        console.log(convertToString.search(listOperator))
-        if (convertToString.search(listOperator) >= 0) {
-            currentText += string;
-            tempString = currentText;
-        }
-        else {
-            tempString = string;
-        } 
-    }
-
-    screenString.innerText = tempString;
-    //console.log(screenString.innerText)
-}
+const handler = {
+    log: "",
+    main: "0",
+};
 
 function selectScreen() {
     const screenString = document.querySelector(".screen");
     return screenString;
 }
 
-function checkOperator(string) {
-    const listOperator = /[%+-/*=]/g;
-    let indexOperator = string.search(listOperator);
-    let flagNegative = 1;
-    console.log(string)
-    console.log(indexOperator)
+function selectlogScreen() {
+    const screenString = document.querySelector(".screenlog");
+    return screenString;
+}
 
-    if (string[0] == "-") {
-        string = string.slice(1);
-        indexOperator = (string.search(listOperator));
-        flagNegative = 1 * -1;
-        console.log("ABOVE TEST: " + string)
-        console.log("TEST: " + indexOperator)
+function initializeScreen() {
+    selectScreen().innerText = handler.main;
+}
+
+initializeScreen();
+
+function redirectInput(character) {
+    const listOperator = /[+\-\/*]/g;
+    const listNumbers = /[0123456789\.]/g;
+    const decimal = /[\.]/g;
+    let indexOperator = character.search(listOperator);
+    let indexNumbers = character.search(listNumbers);
+    handler.main.search(decimal)
+
+    console.log(((handler.main).match(decimal)))
+
+    // checks for operands, updates actual screens
+    if (indexOperator >= 0) {
+        if (handler.log.search(listOperator) >= 0) {
+            handler.log = handler.log.slice(0,-1);
+            handler.log = handler.main + character;
+        }
+        else if (handler.log.search(listOperator) < 0) {
+            handler.log += handler.main + character;
+        }
+        //handler.log += handler.main + character;
+        selectlogScreen().innerText = handler.log;
     }
 
-    if (indexOperator >= 0) {
-        let operandOne = parseInt(string.slice(0,indexOperator)) * flagNegative;
-        let operandTwo = parseInt(string.slice(indexOperator+1));
-        console.log(operandOne)
-        console.log(operandTwo)
-        let operator = string[indexOperator];
-        console.log(operator)
-        let clearScreen = selectScreen();
-        
+    // Remember to include ZERO, decimal behavior
+    if (indexNumbers >= 0) {
+       if (handler.main.search(decimal) >= 0) {
+            if (character >= 0) {
+                handler.main += character;
+            }
+       }
+       else if (handler.main.search(decimal) < 0) {
+            if (handler.main == 0) {
+                if (character >= 0) {
+                    handler.main = character;
+                }
+                if (character == '.') {
+                    handler.main += character;
+                }
+            }
+            else if (handler.main > 0) {
+                handler.main += character;
+            }
 
-        let result = selectOperation(operator,operandOne,operandTwo);
-        if (result == 0) {
-            
-            clearScreen.innerText = "";
-            screen("0");
-            
-        }
-        else if (result != 0) {
-            clearScreen.innerText = "";
-            screen(result);
-        }
+       }
+        selectScreen().innerText = handler.main;
     }
 }
+
 
 const itemPercent = document.querySelector(".buttonPercent");
 itemPercent.addEventListener("click", function() {
     console.log(this)
-    screen("%");
+    redirectInput("%");
 })
 
 const itemClearEntry = document.querySelector(".buttonClearEntry");
 itemClearEntry.addEventListener("click", function() {
     console.log(this)
-    const screenString = document.querySelector(".screen");
-    screenString.innerText = "";
+    handler.main = "0";
+    selectScreen().innerText = handler.main;
 })
 
 // Needs to be expanded
 const itemClear = document.querySelector(".buttonClear");
 itemClear.addEventListener("click", function() {
     console.log(this)
-    //screen("2");
+    handler.main = "0";
+    handler.log = "";
+    selectScreen().innerText = handler.main;
+    selectlogScreen().innerText = handler.log;
 })
 
 const itemBackspace = document.querySelector(".buttonBackspace");
 itemBackspace.addEventListener("click", function() {
-    const screenString = document.querySelector(".screen");
-    screenString.innerText = (screenString.innerText).slice(0,-1);
+    console.log(this)
+    if (selectScreen().length > 1) {
+        selectScreen().innerText = (selectScreen().innerText).slice(0,-1);
+    }
+    else {
+        selectScreen().innerText = "0";
+    }
 })
 
 const itemDivide = document.querySelector(".buttonDivide");
 itemDivide.addEventListener("click", function() {
     console.log(this)
-    checkOperator((selectScreen()).innerText)
-    screen("÷");
+    //checkOperator((selectScreen()).innerText)
+    redirectInput("/");
 })
 
 const itemMultiply = document.querySelector(".buttonMultiply");
 itemMultiply.addEventListener("click", function() {
     console.log(this)
-    checkOperator((selectScreen()).innerText)
-    screen("×");
+    //checkOperator((selectScreen()).innerText)
+    redirectInput("*");
 })
 
 const itemSubtract = document.querySelector(".buttonSubtract");
 itemSubtract.addEventListener("click", function() {
     console.log(this)
-    checkOperator((selectScreen()).innerText)
-    screen("-");
+    //checkOperator((selectScreen()).innerText)
+    redirectInput("-");
 })
 
 const itemPlus = document.querySelector(".buttonPlus");
@@ -148,86 +147,86 @@ itemPlus.addEventListener("click", function() {
     console.log(this)
     //const screenString = document.querySelector(".screen");
     //console.log(screenString.innerText)
-    checkOperator((selectScreen()).innerText)
-    screen("+");
+    //checkOperator((selectScreen()).innerText)
+    redirectInput("+");
 })
 
 const itemEqual = document.querySelector(".buttonEqual");
 itemEqual.addEventListener("click", function() {
     console.log(this)
-    screen("=");
+    redirectInput("=");
 })
 
 // Needs a function, multiply by -1 maybe
 const itemPlusMinus = document.querySelector(".buttonPlusMinus");
 itemPlusMinus.addEventListener("click", function() {
     console.log(this)
-    screen("");
+    redirectInput("");
 })
 
 const itemDecimal = document.querySelector(".buttonDecimal");
 itemDecimal.addEventListener("click", function() {
     console.log(this)
-    screen(".");
+    redirectInput(".");
 })
 
 
 const itemZero = document.querySelector(".buttonZero");
 itemZero.addEventListener("click", function() {
     console.log(this)
-    screen("0");
+    redirectInput("0");
 })
 
 const itemOne = document.querySelector(".buttonOne");
 itemOne.addEventListener("click", function() {
     console.log(this)
-    screen("1");
+    redirectInput("1");
 })
 
 const itemTwo = document.querySelector(".buttonTwo");
 itemTwo.addEventListener("click", function() {
     console.log(this)
-    screen("2");
+    redirectInput("2");
 })
 
 const itemThree = document.querySelector(".buttonThree");
 itemThree.addEventListener("click", function() {
     console.log(this)
-    screen("3");
+    redirectInput("3");
 })
 
 const itemFour = document.querySelector(".buttonFour");
 itemFour.addEventListener("click", function() {
     console.log(this)
-    screen("4");
+    redirectInput("4");
 })
 
 const itemFive = document.querySelector(".buttonFive");
 itemFive.addEventListener("click", function() {
     console.log(this)
-    screen("5");
+    redirectInput("5");
 })
 
 const itemSix = document.querySelector(".buttonSix");
 itemSix.addEventListener("click", function() {
     console.log(this)
-    screen("6");
+    redirectInput("6");
 })
 
 const itemSeven = document.querySelector(".buttonSeven");
 itemSeven.addEventListener("click", function() {
     console.log(this)
-    screen("7");
+    redirectInput("7");
 })
 
 const itemEight = document.querySelector(".buttonEight");
 itemEight.addEventListener("click", function() {
     console.log(this)
-    screen("8");
+    redirectInput("8");
 })
 
 const itemNine = document.querySelector(".buttonNine");
 itemNine.addEventListener("click", function() {
     console.log(this)
-    screen("9");
+    redirectInput("9");
 })

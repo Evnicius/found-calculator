@@ -24,6 +24,15 @@ body {
     border: solid 0.1px red;
     grid-column-start: 1;
     grid-column-end: 5;
+    text-align: right;
+}
+
+.screenlog {
+    border: solid 0.1px red;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    min-height: 10px;
+    text-align: right;
 }
 
 .block {
